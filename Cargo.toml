@@ -1,0 +1,11 @@
+[package]
+name = "reinze-lib-util"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+meval = "0.2"
+regex = "1.7.1"
+
+[lib]
+crate-type = ["dylib"]
