@@ -53,6 +53,13 @@ pub fn p(s: &str) -> String {
     format!("{}{}{}", c1("("), c2(s), c1(")"))
 }
 
+// Adds commas to a number
+pub fn commas(n: f64) -> String {
+    let num = NumberFormat::new();
+
+    num.format(",d", n)
+}
+
 // Adds commas to a string
 pub fn commas_from_string(n: &str) -> String {
     let n = match n.parse::<f64>() {
@@ -60,7 +67,5 @@ pub fn commas_from_string(n: &str) -> String {
         Err(_) => 0.0,
     };
 
-    let num = NumberFormat::new();
-
-    num.format(",d", n)
+    commas(n)
 }
