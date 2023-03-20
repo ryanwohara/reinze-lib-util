@@ -6,7 +6,7 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
     // From iKick's source
     // alias calc2 return $calc($regsubex($remove($1-,$chr(44)),/([\d.]+)([kmb])/gi,$calc(\1 * $+(1,$str(000,$pos(kmb,\2,1))))))
 
-    let re_verify = Regex::new(r"^[-+%/*^\d()><.kmb]+$").unwrap();
+    let re_verify = Regex::new(r"^(?:pi|e|abs|sqrt|exp|ln|sin|cos|tan|asin|acos|atan|atan2|sinh|cosh|tanh|asignh|acosh|atanh|floor|ceil|round|[-+%/*^\d\s()><=,.kmb])+$").unwrap();
 
     if !re_verify.is_match(query) {
         return Err(());
@@ -14,7 +14,7 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
 
     let no_commas = query.replace(",", "");
 
-    let re_kmb = Regex::new(r"(?P<num>[\d.]+)(?P<kmb>[kmb])").unwrap();
+    let re_kmb = Regex::new(r"(?P<num>[-\d.]+)(?P<kmb>[kmb])").unwrap();
     let processed = re_kmb
         .replace_all(&no_commas, |caps: &regex::Captures| {
             let num = caps.name("num").unwrap().as_str();
@@ -37,7 +37,7 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
         .to_string();
 
     let result = match eval_str(processed) {
-        Ok(f) => f.to_string(),
+        Ok(f) => f,
         Err(e) => {
             println!("Error: {}", e);
             return Err(());
@@ -49,6 +49,6 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
         common::l("Calc"),
         common::c1(query),
         common::c1("="),
-        common::c2(&common::commas_from_string(&result))
+        common::c2(&common::commas_from_string(&result.to_string()))
     )])
 }
