@@ -1,4 +1,5 @@
 mod calculator;
+mod common;
 
 #[no_mangle]
 pub extern "C" fn exported(
