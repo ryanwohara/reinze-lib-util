@@ -37,7 +37,7 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
         .to_string();
 
     let result = match eval_str(processed) {
-        Ok(f) => f,
+        Ok(f) => f as f64,
         Err(e) => {
             println!("Error: {}", e);
             return Err(());
@@ -49,6 +49,6 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
         common::l("Calc"),
         common::c1(query),
         common::c1("="),
-        common::c2(&common::commas_from_string(&result.to_string()))
+        common::c2(&common::commas(result))
     )])
 }

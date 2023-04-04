@@ -57,7 +57,7 @@ pub fn p(s: &str) -> String {
 pub fn commas(n: f64) -> String {
     let num = NumberFormat::new();
 
-    num.format(",d", n)
+    num.format(",f", n)
 }
 
 // Adds commas to a string
