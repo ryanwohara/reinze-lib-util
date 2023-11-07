@@ -1,6 +1,6 @@
 use format_num::NumberFormat;
 
-pub fn capitalize(s: &str) -> String {
+pub fn _capitalize(s: &str) -> String {
     let mut c = s.chars();
     match c.next() {
         None => String::new(),
@@ -25,19 +25,19 @@ pub fn c2(s: &str) -> String {
 
 // Red
 // c3
-pub fn c3(s: &str) -> String {
+pub fn _c3(s: &str) -> String {
     format!("\x0305{}", s)
 }
 
 // Green
 // c4
-pub fn c4(s: &str) -> String {
+pub fn _c4(s: &str) -> String {
     format!("\x0303{}", s)
 }
 
 // Yellow
 // c5
-pub fn c5(s: &str) -> String {
+pub fn _c5(s: &str) -> String {
     format!("\x0307{}", s)
 }
 
@@ -49,7 +49,7 @@ pub fn l(s: &str) -> String {
 
 // A function for wrapping a string in parenthesis that are colored gray
 // p
-pub fn p(s: &str) -> String {
+pub fn _p(s: &str) -> String {
     format!("{}{}{}", c1("("), c2(s), c1(")"))
 }
 
@@ -61,7 +61,7 @@ pub fn commas(n: f64) -> String {
 }
 
 // Adds commas to a string
-pub fn commas_from_string(n: &str) -> String {
+pub fn _commas_from_string(n: &str) -> String {
     let n = match n.parse::<f64>() {
         Ok(n) => n,
         Err(_) => 0.0,

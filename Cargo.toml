@@ -5,8 +5,8 @@ edition = "2018"
 
 [dependencies]
 format_num = "0.1.0"
-meval = "0.2"
-regex = "1.7.1"
+meval = { git = "https://github.com/ryanwohara/meval-rs.git", branch = "main" }
+regex = "1.10.2"
 
 [lib]
 crate-type = ["dylib"]
