@@ -10,44 +10,26 @@ pub extern "C" fn exported(
     raw_query: *const c_char,
     raw_author: *const c_char,
 ) -> *mut c_char {
-    let nil = CString::new("").unwrap().into_raw();
+    let command = to_str_or_default(cmd);
+    let query = to_str_or_default(raw_query);
+    let _author = to_str_or_default(raw_author);
 
-    if cmd.is_null() || raw_query.is_null() || raw_author.is_null() {
-        return nil; // using unwrap() here is safe because we know the string is valid UTF-8
-    }
-
-    let unsafe_cmd = unsafe { CStr::from_ptr(cmd) };
-    let unsafe_query = unsafe { CStr::from_ptr(raw_query) };
-    let unsafe_author = unsafe { CStr::from_ptr(raw_author) };
-
-    let command = match unsafe_cmd.to_str() {
-        Ok(command) => command,
-        Err(_) => return nil,
-    };
-
-    let query = match unsafe_query.to_str() {
-        Ok(query) => query,
-        Err(_) => return nil,
-    };
-
-    let _author = match unsafe_author.to_str() {
-        Ok(author) => author,
-        Err(_) => return nil,
-    };
-
-    match match command {
-        "calc" | "calculate" | "calculator" => calculator::calculate(query),
+    let result = match command.as_str() {
+        "calc" | "calculate" | "calculator" => calculator::calculate(query.as_str()),
         "help" => Ok(vec!["calc".to_string()]),
         "" => Ok("calc"
             .split("\n")
             .map(|s| s.to_string())
             .collect::<Vec<String>>()),
         _ => Ok(vec![]),
-    } {
-        Ok(output) => match CString::new(output.join("\n")) {
-            Ok(output) => output.into_raw(),
-            Err(_) => nil,
-        },
-        Err(_) => nil,
-    }
+    };
+
+    let output = result.unwrap_or_default();
+
+    CString::new(output.join("\n")).unwrap().into_raw()
+}
+
+fn to_str_or_default(ptr: *const c_char) -> String {
+    let cstr = unsafe { CStr::from_ptr(ptr) };
+    cstr.to_str().unwrap_or_default().to_owned()
 }
