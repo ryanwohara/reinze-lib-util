@@ -1,4 +1,5 @@
-use crate::common;
+extern crate common;
+
 use meval::eval_str;
 use regex::Regex;
 
@@ -20,10 +21,7 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
             let num = caps.name("num").unwrap().as_str();
             let kmb = caps.name("kmb").unwrap().as_str();
 
-            let mut num = match num.parse::<f64>() {
-                Ok(n) => n,
-                Err(_) => 0.0,
-            };
+            let mut num = num.parse::<f64>().unwrap_or_default();
 
             match kmb {
                 "k" => num *= 1000.0,
@@ -37,7 +35,7 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
         .to_string();
 
     let result = match eval_str(processed) {
-        Ok(f) => f as f64,
+        Ok(f) => f,
         Err(e) => {
             println!("Error: {}", e);
             return Err(());
@@ -49,6 +47,6 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
         common::l("Calc"),
         common::c1(query),
         common::c1("="),
-        common::c2(&common::commas(result))
+        common::c2(&common::commas(result, "f"))
     )])
 }
