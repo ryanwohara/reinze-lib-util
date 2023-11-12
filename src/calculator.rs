@@ -23,28 +23,28 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
 
 fn eval_query(query: String) -> Result<f64, ()> {
     let re_kmb = Regex::new(r"(?P<num>[\d.]+)(?P<kmb>[kmb])").unwrap();
-    let processed = re_kmb
-        .replace_all(&query, |caps: &regex::Captures| {
-            let (num, kmb) = (
-                caps.name("num").unwrap().as_str(),
-                caps.name("kmb").unwrap().as_str(),
-            );
-            let mut num = num.parse::<f64>().unwrap_or_default();
-
-            if let Some(factor) = match kmb {
-                "k" => Some(1_000.0),
-                "m" => Some(1_000_000.0),
-                "b" => Some(1_000_000_000.0),
-                _ => None,
-            } {
-                num *= factor;
-            }
-            num.to_string()
-        })
-        .to_string();
+    let processed = re_kmb.replace_all(&query, replace_all).to_string();
 
     eval_str(&processed).map_err(|e| {
         println!("Error: {}", e);
         ()
     })
+}
+
+fn replace_all(caps: &regex::Captures) -> String {
+    let (num, kmb) = (
+        caps.name("num").unwrap().as_str(),
+        caps.name("kmb").unwrap().as_str(),
+    );
+    let mut num = num.parse::<f64>().unwrap_or_default();
+
+    if let Some(factor) = match kmb {
+        "k" => Some(1_000.0),
+        "m" => Some(1_000_000.0),
+        "b" => Some(1_000_000_000.0),
+        _ => None,
+    } {
+        num *= factor;
+    }
+    num.to_string()
 }
