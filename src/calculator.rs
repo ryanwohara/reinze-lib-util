@@ -17,7 +17,9 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
         "{} {} = {}",
         common::l("Calc"),
         common::c1(query),
-        common::c2(&common::commas(result, "f"))
+        common::c2(&common::remove_trailing_zeroes(&common::commas(
+            result, "f"
+        )))
     )])
 }
 
