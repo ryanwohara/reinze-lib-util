@@ -1,12 +1,12 @@
 [package]
 name = "reinze-lib-util"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 common = { git = "https://github.com/ryanwohara/reinze-lib-common.git", branch = "main", package = "reinze-lib-common" }
 meval = { git = "https://github.com/ryanwohara/meval-rs.git", branch = "main" }
-regex = "1.10.2"
+regex = "1.11.3"
 
 [lib]
 crate-type = ["dylib"]
