@@ -5,7 +5,7 @@ extern crate common;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn exported(
     cmd: *const c_char,
     raw_query: *const c_char,
