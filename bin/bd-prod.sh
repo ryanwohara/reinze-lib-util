@@ -6,4 +6,4 @@
 cargo update && \
   cargo build --release && \
   rm -rf ../rust-reinze/plugins/libreinze_lib_util_* && \
-  cp "target/release/libreinze_lib_util${extension}" "../rust-reinze/plugins/libreinze_lib_util_$(date "+%Y%m%dT%H%M%S")${extension}"
+  mv "target/release/libreinze_lib_util${extension}" "../rust-reinze/plugins/libreinze_lib_util_$(date "+%Y%m%dT%H%M%S")${extension}"
