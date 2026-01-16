@@ -22,8 +22,8 @@ pub extern "C" fn exported(
 
     let result = match command {
         "calc" | "calculate" | "calculator" => calculator::calculate(query),
-        "c-f" | "c_f" => temp::c_f(query),
-        "f-c" | "f_c" => temp::f_c(query),
+        "cf" | "c-f" | "c_f" => temp::c_f(query),
+        "fc" | "f-c" | "f_c" => temp::f_c(query),
         "help" => Ok("calc
 c-f
 f-c"
