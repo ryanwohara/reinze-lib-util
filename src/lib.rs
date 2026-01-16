@@ -31,8 +31,8 @@ f-c"
         .map(|s| s.to_string())
         .collect::<Vec<String>>()),
         "" => Ok("calc
-c-f
-f-c"
+cf
+fc"
         .split("\n")
         .map(|s| s.to_string())
         .collect::<Vec<String>>()),
