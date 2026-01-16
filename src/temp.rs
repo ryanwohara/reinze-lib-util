@@ -10,6 +10,7 @@ pub fn c_f(query: &str) -> Result<Vec<String>, ()> {
         l("Temperature"),
         p("Celsius->Fahrenheit"),
         c1(query),
+        c1(">"),
         c2(&format!("{}", f)),
     ]
     .join(" ");
@@ -25,6 +26,7 @@ pub fn f_c(query: &str) -> Result<Vec<String>, ()> {
         l("Temperature"),
         p("Fahrenheit->Celsius"),
         c1(query),
+        c1(">"),
         c2(&format!("{}", c)),
     ]
         .join(" ");

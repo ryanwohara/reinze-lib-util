@@ -22,8 +22,8 @@ pub extern "C" fn exported(
 
     let result = match command {
         "calc" | "calculate" | "calculator" => calculator::calculate(query),
-        "cf" | "c-f" | "c_f" => temp::c_f(query),
-        "fc" | "f-c" | "f_c" => temp::f_c(query),
+        "c" | "c-f" | "c_f" => temp::c_f(query),
+        "f" | "f-c" | "f_c" => temp::f_c(query),
         "help" => Ok("calc
 c-f
 f-c"
@@ -31,8 +31,8 @@ f-c"
         .map(|s| s.to_string())
         .collect::<Vec<String>>()),
         "" => Ok("calc
-cf
-fc"
+c(-?f)?
+f(-?c)?"
         .split("\n")
         .map(|s| s.to_string())
         .collect::<Vec<String>>()),
