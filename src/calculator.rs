@@ -1,4 +1,9 @@
 extern crate common;
+use common::l;
+use common::c1;
+use common::c2;
+use common::remove_trailing_zeroes;
+use common::commas;
 use meval::eval_str;
 use regex::Regex;
 
@@ -15,9 +20,9 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
 
     Ok(vec![format!(
         "{} {} = {}",
-        common::l("Calc"),
-        common::c1(query),
-        common::c2(&common::remove_trailing_zeroes(&common::commas(
+        l("Calc"),
+        c1(query),
+        c2(&remove_trailing_zeroes(&commas(
             result, "f"
         )))
     )])
