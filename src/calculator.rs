@@ -10,13 +10,13 @@ use regex::Regex;
 pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
     // From iKick's source
     // alias calc2 return $calc($regsubex($remove($1-,$chr(44)),/([\d.]+)([kmb])/gi,$calc(\1 * $+(1,$str(000,$pos(kmb,\2,1))))))
-    let re_verify = Regex::new(r"^(?:pi|e|abs|sqrt|exp|ln|sin|cos|tan|asin|acos|atan|atan2|sinh|cosh|tanh|asinh|acosh|atanh|floor|ceil|round|[-+%/*^\d\s()><=,.kmb])+$").unwrap();
+    let re_verify = Regex::new(r"^(?:pi|e|abs|sqrt|exp|ln|sin|cos|tan|asin|acos|atan|atan2|sinh|cosh|tanh|asinh|acosh|atanh|floor|ceil|round|signum|[-+%/*^\d\s()><=,.kmb])+$").unwrap();
 
     if !re_verify.is_match(query) {
         return Err(());
     }
 
-    let result = eval_query(query.replace(",", ""))?;
+    let result = eval_query(query.to_string())?;
 
     Ok(vec![format!(
         "{} {} = {}",
