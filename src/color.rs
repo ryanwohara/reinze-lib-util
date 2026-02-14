@@ -36,9 +36,12 @@ fn get(source: &Source) -> Result<Vec<String>, ()> {
     rt.block_on(source.get_colors());
 
     Ok(vec![
-        source.l("Colors"),
-        source.c1("Color 1!"),
-        source.c2("Color 2!"),
+        vec![
+            source.l("Colors"),
+            source.c1("Color 1!"),
+            source.c2("Color 2!"),
+        ]
+        .join(" "),
     ])
 }
 
@@ -53,8 +56,7 @@ where
 
 fn set(source: &Source) -> Result<Vec<String>, ()> {
     let error = Ok(vec![
-        source.l("Colors"),
-        source.c2("Please provide two colors"),
+        vec![source.l("Colors"), source.c2("Please provide two colors")].join(" "),
     ]);
     let mut split = source.query.split_whitespace();
     let _ = split.next();
