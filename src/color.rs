@@ -21,24 +21,21 @@ pub fn query(source: Source) -> Result<Vec<String>, ()> {
     }
 }
 
-fn del(source: &Source) -> Result<Vec<String>, ()> {
+fn del(s: &Source) -> Result<Vec<String>, ()> {
     let rt = tokio::runtime::Runtime::new().unwrap();
-    rt.block_on(source.clear_colors());
+    rt.block_on(s.clear_colors());
 
     Ok(vec![
-        vec![source.l("Colors"), source.c2("Colors cleared".to_string())].join(" "),
+        vec![s.l("Colors"), s.c2("Colors cleared".to_string())].join(" "),
     ])
 }
 
-fn get(source: &Source) -> Result<Vec<String>, ()> {
-    let rt = tokio::runtime::Runtime::new().unwrap();
-    rt.block_on(source.get_colors());
-
+fn get(s: &Source) -> Result<Vec<String>, ()> {
     Ok(vec![
         vec![
-            source.l("Colors"),
-            source.c1("Color 1!"),
-            source.c2("Color 2!"),
+            s.l("Colors"),
+            s.c1("Color 1!"),
+            s.c2("Color 2!"),
         ]
         .join(" "),
     ])
@@ -53,11 +50,11 @@ where
     pattern.is_match(s.to_string().as_str())
 }
 
-fn set(source: &Source) -> Result<Vec<String>, ()> {
+fn set(s: &Source) -> Result<Vec<String>, ()> {
     let error = Ok(vec![
-        vec![source.l("Colors"), source.c2("Please provide two colors")].join(" "),
+        vec![s.l("Colors"), s.c2("Please provide two colors")].join(" "),
     ]);
-    let mut split = source.query.split_whitespace();
+    let mut split = s.query.split_whitespace();
     let _ = split.next();
     let second = split.next();
     if second.is_none() {
@@ -89,7 +86,7 @@ fn set(source: &Source) -> Result<Vec<String>, ()> {
     }
 
     let rt = tokio::runtime::Runtime::new().unwrap();
-    rt.block_on(source.set_colors(Colors { c1, c2 }));
+    rt.block_on(s.set_colors(Colors { c1, c2 }));
 
-    get(source)
+    get(s)
 }
