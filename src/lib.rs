@@ -29,6 +29,7 @@ pub extern "C" fn exported(
         "c" | "c-f" => temp::c_f(query),
         "f" | "f-c" => temp::f_c(query),
         "help" => Ok("calc
+colors
 c-f
 f-c"
         .split("\n")
