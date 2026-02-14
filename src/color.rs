@@ -26,8 +26,7 @@ fn del(source: &Source) -> Result<Vec<String>, ()> {
     rt.block_on(source.clear_colors());
 
     Ok(vec![
-        source.l("Colors"),
-        source.c2("Colors cleared".to_string()),
+        vec![source.l("Colors"), source.c2("Colors cleared".to_string())].join(" "),
     ])
 }
 
@@ -89,10 +88,8 @@ fn set(source: &Source) -> Result<Vec<String>, ()> {
         return error;
     }
 
-    let colors = Colors { c1, c2 };
-
     let rt = tokio::runtime::Runtime::new().unwrap();
-    rt.block_on(source.set_colors(colors));
+    rt.block_on(source.set_colors(Colors { c1, c2 }));
 
     get(source)
 }
