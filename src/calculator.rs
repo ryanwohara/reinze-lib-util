@@ -1,13 +1,12 @@
 extern crate common;
-use common::l;
-use common::c1;
-use common::c2;
 use common::remove_trailing_zeroes;
 use common::commas;
+use common::source::Source;
 use meval::eval_str;
 use regex::Regex;
 
-pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
+pub fn calculate(s: &Source) -> Result<Vec<String>, ()> {
+    let query = &s.query;
     // From iKick's source
     // alias calc2 return $calc($regsubex($remove($1-,$chr(44)),/([\d.]+)([kmb])/gi,$calc(\1 * $+(1,$str(000,$pos(kmb,\2,1))))))
     let re_verify = Regex::new(r"^(?:pi|e|abs|sqrt|exp|ln|sin|cos|tan|asin|acos|atan|atan2|sinh|cosh|tanh|asinh|acosh|atanh|floor|ceil|round|signum|[-+%/*^\d\s()><=,.kmb])+$").unwrap();
@@ -20,9 +19,9 @@ pub fn calculate(query: &str) -> Result<Vec<String>, ()> {
 
     Ok(vec![format!(
         "{} {} = {}",
-        l("Calc"),
-        c1(query),
-        c2(&remove_trailing_zeroes(&commas(
+        s.l("Calc"),
+        s.c1(query),
+        s.c2(&remove_trailing_zeroes(&commas(
             result, "f"
         )))
     )])

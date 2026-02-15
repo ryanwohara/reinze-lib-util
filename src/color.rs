@@ -1,4 +1,4 @@
-use common::Colors;
+use std::ffi::CString;
 use common::source::Source;
 
 pub fn query(source: Source) -> Result<Vec<String>, ()> {
@@ -22,8 +22,7 @@ pub fn query(source: Source) -> Result<Vec<String>, ()> {
 }
 
 fn del(s: &Source) -> Result<Vec<String>, ()> {
-    let rt = tokio::runtime::Runtime::new().unwrap();
-    rt.block_on(s.clear_colors());
+    s.clear_colors();
 
     Ok(vec![
         vec![s.l("Colors"), s.c2("Colors cleared".to_string())].join(" "),
@@ -54,6 +53,7 @@ fn set(s: &Source) -> Result<Vec<String>, ()> {
     let error = Ok(vec![
         vec![s.l("Colors"), s.c2("Please provide two colors")].join(" "),
     ]);
+
     let mut split = s.query.split_whitespace();
     let _ = split.next();
     let second = split.next();
@@ -85,8 +85,10 @@ fn set(s: &Source) -> Result<Vec<String>, ()> {
         return error;
     }
 
-    let rt = tokio::runtime::Runtime::new().unwrap();
-    rt.block_on(s.set_colors(Colors { c1, c2 }));
+    let host = CString::new(s.author.host.to_string()).unwrap().into_raw();
+    let colors = CString::new(vec![c1, c2].join(",")).unwrap().into_raw();
+
+    (s.author.color)(host, colors);
 
     get(s)
 }
