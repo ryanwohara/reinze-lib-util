@@ -6,7 +6,9 @@ edition = "2024"
 [dependencies]
 common = { git = "https://github.com/ryanwohara/reinze-lib-common.git", branch = "main", package = "reinze-lib-common" }
 meval = { git = "https://github.com/ryanwohara/meval-rs.git", branch = "main" }
-regex = "1.11.3"
+anyhow = "1.0.100"
+log = "0.4"
+regex = "1.12.3"
 tokio = { version = "1.49.0", features = ["full"] }
 
 [lib]

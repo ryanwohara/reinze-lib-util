@@ -2,15 +2,22 @@ mod calculator;
 mod color;
 mod temp;
 
-use common::{to_str_or_default, PluginContext};
 use common::author::Author;
 use common::source::Source;
-use std::ffi::{CString};
+use common::{PluginContext, to_str_or_default};
+use log::error;
+use std::ffi::CString;
 use std::os::raw::c_char;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn exported(context: *const PluginContext) -> *mut c_char {
     unsafe {
+        let nil = CString::new("").unwrap().into_raw();
+
+        if context.is_null() {
+            return nil;
+        }
+
         let full_command = to_str_or_default((*context).cmd);
         let full_query = to_str_or_default((*context).param);
         let full_author = to_str_or_default((*context).author);
@@ -22,7 +29,7 @@ pub extern "C" fn exported(context: *const PluginContext) -> *mut c_char {
 
         let source = Source::create("0", Author::create(author, color), command, query);
 
-        let result = match command {
+        match match command {
             "calc" | "calculate" | "calculator" => calculator::calculate(&source),
             "color" | "colors" => color::query(source),
             "c" | "c-f" => temp::c_f(&source),
@@ -42,10 +49,15 @@ colors?$
                 .map(|s| s.to_string())
                 .collect::<Vec<String>>()),
             _ => Ok(vec![]),
-        };
-
-        let output = result.unwrap_or_default();
-
-        CString::new(output.join("\n")).unwrap().into_raw()
+        } {
+            Ok(output) => match CString::new(output.join("\n")) {
+                Ok(output) => output.into_raw(),
+                Err(_) => nil,
+            },
+            Err(e) => {
+                error!("Command '{}' failed: {:?}", command, e);
+                nil
+            }
+        }
     }
 }

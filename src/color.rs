@@ -1,7 +1,6 @@
-use std::ffi::CString;
 use common::source::Source;
 
-pub fn query(source: Source) -> Result<Vec<String>, ()> {
+pub fn query(source: Source) -> anyhow::Result<Vec<String>> {
     let syntax = Ok(vec![
         "Syntax: -colors get | -colors set 14,04 | -colors del".to_string(),
     ]);
@@ -21,7 +20,7 @@ pub fn query(source: Source) -> Result<Vec<String>, ()> {
     }
 }
 
-fn del(s: &Source) -> Result<Vec<String>, ()> {
+fn del(s: &Source) -> anyhow::Result<Vec<String>> {
     s.clear_colors();
 
     Ok(vec![
@@ -29,7 +28,7 @@ fn del(s: &Source) -> Result<Vec<String>, ()> {
     ])
 }
 
-fn get(s: &Source) -> Result<Vec<String>, ()> {
+fn get(s: &Source) -> anyhow::Result<Vec<String>> {
     Ok(vec![
         vec![
             s.l("Colors"),
@@ -49,7 +48,7 @@ where
     pattern.is_match(s.to_string().as_str())
 }
 
-fn set(s: &Source) -> Result<Vec<String>, ()> {
+fn set(s: &Source) -> anyhow::Result<Vec<String>> {
     let error = Ok(vec![
         vec![s.l("Colors"), s.c2("Please provide two colors")].join(" "),
     ]);

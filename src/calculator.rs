@@ -1,18 +1,18 @@
-extern crate common;
-use common::remove_trailing_zeroes;
+use anyhow::{anyhow, bail};
 use common::commas;
+use common::remove_trailing_zeroes;
 use common::source::Source;
 use meval::eval_str;
 use regex::Regex;
 
-pub fn calculate(s: &Source) -> Result<Vec<String>, ()> {
+pub fn calculate(s: &Source) -> anyhow::Result<Vec<String>> {
     let query = &s.query;
     // From iKick's source
     // alias calc2 return $calc($regsubex($remove($1-,$chr(44)),/([\d.]+)([kmb])/gi,$calc(\1 * $+(1,$str(000,$pos(kmb,\2,1))))))
     let re_verify = Regex::new(r"^(?:pi|e|abs|sqrt|exp|ln|sin|cos|tan|asin|acos|atan|atan2|sinh|cosh|tanh|asinh|acosh|atanh|floor|ceil|round|signum|[-+%/*^\d\s()><=,.kmb])+$").unwrap();
 
     if !re_verify.is_match(query) {
-        return Err(());
+        bail!("invalid query: {}", query);
     }
 
     let result = eval_query(query.to_string())?;
@@ -21,20 +21,15 @@ pub fn calculate(s: &Source) -> Result<Vec<String>, ()> {
         "{} {} = {}",
         s.l("Calc"),
         s.c1(query),
-        s.c2(&remove_trailing_zeroes(&commas(
-            result, "f"
-        )))
+        s.c2(&remove_trailing_zeroes(&commas(result, "f")))
     )])
 }
 
-fn eval_query(query: String) -> Result<f64, ()> {
+fn eval_query(query: String) -> anyhow::Result<f64> {
     let re_kmb = Regex::new(r"(?P<num>[\d.]+)(?P<kmb>[kmb])").unwrap();
     let processed = re_kmb.replace_all(&query, replace_all).to_string();
 
-    eval_str(&processed).map_err(|e| {
-        println!("Error: {}", e);
-        ()
-    })
+    eval_str(&processed).map_err(|e| anyhow!("{}", e))
 }
 
 fn replace_all(caps: &regex::Captures) -> String {

@@ -1,8 +1,6 @@
-extern crate common;
-
 use common::source::Source;
 
-pub fn c_f(s: &Source) -> Result<Vec<String>, ()> {
+pub fn c_f(s: &Source) -> anyhow::Result<Vec<String>> {
     let query = &s.query;
 
     let c = query.parse::<f64>().unwrap_or_default();
@@ -20,7 +18,7 @@ pub fn c_f(s: &Source) -> Result<Vec<String>, ()> {
     Ok(vec![output])
 }
 
-pub fn f_c(s: &Source) -> Result<Vec<String>, ()> {
+pub fn f_c(s: &Source) -> anyhow::Result<Vec<String>> {
     let query = &s.query;
 
     let f = query.parse::<f64>().unwrap_or_default();
