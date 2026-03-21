@@ -30,12 +30,7 @@ fn del(s: &Source) -> anyhow::Result<Vec<String>> {
 
 fn get(s: &Source) -> anyhow::Result<Vec<String>> {
     Ok(vec![
-        vec![
-            s.l("Colors"),
-            s.c1("Color 1!"),
-            s.c2("Color 2!"),
-        ]
-        .join(" "),
+        vec![s.l("Colors"), s.c1("Color 1!"), s.c2("Color 2!")].join(" "),
     ])
 }
 

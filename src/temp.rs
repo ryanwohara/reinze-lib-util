@@ -31,7 +31,7 @@ pub fn f_c(s: &Source) -> anyhow::Result<Vec<String>> {
         s.c1(">"),
         s.c2(&format!("{}", c)),
     ]
-        .join(" ");
+    .join(" ");
 
     Ok(vec![output])
 }
