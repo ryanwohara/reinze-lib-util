@@ -1,4 +1,5 @@
 use common::source::Source;
+use std::ffi::CString;
 
 pub fn query(source: Source) -> anyhow::Result<Vec<String>> {
     let syntax = Ok(vec![
