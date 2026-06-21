@@ -21,13 +21,16 @@ pub extern "C" fn exported(context: *const PluginContext) -> *mut c_char {
         let full_command = to_str_or_default((*context).cmd);
         let full_query = to_str_or_default((*context).param);
         let full_author = to_str_or_default((*context).author);
+        let full_channel = to_str_or_default((*context).channel);
         let color = (*context).color;
 
         let command = full_command.as_str();
         let query = full_query.as_str();
         let author = full_author.as_str();
+        let channel = full_channel.as_str();
 
-        let source = Source::create("0", Author::create(author, color), command, query);
+        let source = Source::create("0", Author::create(author, color), command, query)
+            .with_channel(channel);
 
         match match command {
             "calc" | "calculate" | "calculator" => calculator::calculate(&source),
