@@ -19,9 +19,10 @@ Output from a `-command` is private (messaged to the caller).
   `-calculator`).
 - `-colors get | set <fg>[,<bg>] <fg>[,<bg>] | del` — Manage your personal pair of
   highlight colors used to format the bot's output for you (alias `-color`). Each
-  color is a two-digit code, optionally followed by a comma and a two-digit
-  background code (e.g. `14` or `14,01`). `get` previews your current colors;
-  `del` resets to default. Example: `-colors set 14,01 04,01`.
+  color is a one- or two-digit code (single digits are zero-padded, so `4` → `04`),
+  optionally followed by a comma and a background code (e.g. `4`, `14`, or
+  `14,01`). `get` previews your current colors; `del` resets to default.
+  Example: `-colors set 4 1` or `-colors set 14,01 04,01`.
 - `-c (temperature)` — Convert Celsius to Fahrenheit, F = C × 1.8 + 32 (alias
   `-c-f`).
 - `-f (temperature)` — Convert Fahrenheit to Celsius, C = (F − 32) / 1.8 (alias
